@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>随备</ShortName>
+  <Description>在网页备份站中搜索指定网址的历史快照</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="32" height="32" type="image/png">icons/icon-32x32.png</Image>
+  <Url type="text/html" template="/?q={searchTerms}"/>
+  <Url type="application/x-suggestions+json" template="/?q={searchTerms}"/>
+</OpenSearchDescription>

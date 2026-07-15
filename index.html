@@ -11,6 +11,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="随备 Archive Away">
 <style>
   * {
     margin: 0;
@@ -323,41 +324,48 @@
     }
   };
 
-  $('btnAll').onclick = function() {
-    var url = getUrl();
+  function doAction(action, url, service) {
+    if (!url) url = getUrl();
     if (!url) return;
-    var svc = services[getService()];
-    var finalUrl = svc.all.replace('%0', getService() === 'megalodon' ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url));
-    window.open(finalUrl, '_blank');
-  };
+    if (!service) service = getService();
+    var isMegalodon = service === 'megalodon';
+    var encoded = isMegalodon ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url);
 
-  $('btnLatest').onclick = function() {
-    var url = getUrl();
-    if (!url) return;
-    var svc = services[getService()];
-    var finalUrl = svc.latest.replace('%0', getService() === 'megalodon' ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url));
-    window.open(finalUrl, '_blank');
-  };
-
-  $('btnSave').onclick = function() {
-    var url = getUrl();
-    if (!url) return;
-    var service = getService();
-
-    if (service === 'ghostarchive') {
+    if (action === 'save' && service === 'ghostarchive') {
       window.open('https://ghostarchive.org', '_blank');
       return;
     }
-
-    if (service === 'arquivo') {
+    if (action === 'save' && service === 'arquivo') {
       window.open('https://arquivo.pt/services/archivepagenow', '_blank');
       return;
     }
 
     var svc = services[service];
-    var finalUrl = svc.save.replace('%0', service === 'megalodon' ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url));
+    var template = svc[action] || svc.latest;
+    var finalUrl = template.replace('%0', encoded);
     window.open(finalUrl, '_blank');
-  };
+  }
+
+  $('btnAll').onclick = function() { doAction('all'); };
+  $('btnLatest').onclick = function() { doAction('latest'); };
+  $('btnSave').onclick = function() { doAction('save'); };
+
+  // Parse URL parameters for OpenSearch / direct access
+  var params = new URLSearchParams(location.search);
+  var q = params.get('q');
+  if (q) {
+    q = q.trim();
+    $('urlInput').value = q;
+    var service = params.get('s');
+    var action = params.get('a');
+    if (service && services[service]) {
+      var radios = document.getElementsByName('archive');
+      for (var i = 0; i < radios.length; i++) {
+        if (radios[i].value === service) radios[i].checked = true;
+      }
+    }
+    doAction(action || 'latest', q, service);
+  }
 })();
 </script>
 
