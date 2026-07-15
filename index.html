@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>随备 Archive Away | 网页备份聚合搜索</title>
+<title>随备 Archive Away — 网页备份搜索</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
@@ -172,6 +172,51 @@
     margin-top: 4px;
   }
 
+  .help-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e8eaed;
+  }
+
+  .help-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .help-table th,
+  .help-table td {
+    text-align: left;
+    padding: 4px 8px;
+    border-bottom: 1px solid #e8eaed;
+  }
+
+  .help-table th {
+    color: #3c4043;
+    font-weight: 500;
+    background: #f0f0f0;
+  }
+
+  .help-table td code {
+    font-size: 11px;
+  }
+
+  .help-example {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: #fff;
+    border: 1px solid #e8eaed;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .help-example code {
+    background: #e8eaed;
+    font-size: 11px;
+  }
+
   .buttons {
     display: flex;
     flex-wrap: wrap;
@@ -298,10 +343,76 @@
 
     <div class="help">
       <div class="help-title">OpenSearch 语法</div>
-      <div>可将本页添加为浏览器搜索引擎。URL 参数：<code>q</code> 网址, <code>s</code> 备份站, <code>a</code> 动作</div>
-      <div class="help-row"><code>s</code> 可选值：wayback · archiveit · archivetoday · ghostarchive · megalodon · arquivo</div>
-      <div class="help-row"><code>a</code> 可选值：latest · all · save</div>
-      <div class="help-row">示例：<a href="/?q=example.com">?q=example.com</a> · <a href="/?q=example.com&amp;s=archivetoday">?q=example.com&amp;s=archivetoday</a> · <a href="/?q=example.com&amp;a=save">?q=example.com&amp;a=save</a></div>
+      <div>本页支持 <a href="https://developer.mozilla.org/zh-CN/docs/Web/OpenSearch" target="_blank" rel="noopener noreferrer">OpenSearch</a> 协议，可将"随备"添加为浏览器搜索引擎，在地址栏直接搜索网页备份。</div>
+
+      <div class="help-section">
+        <div class="help-title">添加搜索引擎</div>
+        <div>Chrome / Edge / Firefox：打开本页后，在浏览器地址栏右侧点击"+"或进入设置 → 搜索引擎 → 添加，即可将"随备"设为搜索引擎。之后在地址栏输入关键词即可直达搜索结果。</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">URL 参数</div>
+        <table class="help-table">
+          <tr><th>参数</th><th>说明</th><th>必填</th></tr>
+          <tr><td><code>q</code></td><td>要查询或保存的网址</td><td>是</td></tr>
+          <tr><td><code>s</code></td><td>目标备份站 ID（见下表）</td><td>否，默认 wayback</td></tr>
+          <tr><td><code>a</code></td><td>执行动作（latest / all / save）</td><td>否，默认 latest</td></tr>
+        </table>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">备份站 ID 对照表（<code>s</code> 参数）</div>
+        <table class="help-table">
+          <tr><th>ID</th><th>备份站</th></tr>
+          <tr><td><code>wayback</code></td><td>Wayback Machine（默认）</td></tr>
+          <tr><td><code>archiveit</code></td><td>Archive-It</td></tr>
+          <tr><td><code>archivetoday</code></td><td>Archive.today</td></tr>
+          <tr><td><code>ghostarchive</code></td><td>Ghost Archive</td></tr>
+          <tr><td><code>megalodon</code></td><td>Megalodon.jp</td></tr>
+          <tr><td><code>arquivo</code></td><td>Arquivo.pt</td></tr>
+        </table>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">动作类型（<code>a</code> 参数）</div>
+        <table class="help-table">
+          <tr><th>值</th><th>说明</th></tr>
+          <tr><td><code>latest</code></td><td>查看最新备份（默认）</td></tr>
+          <tr><td><code>all</code></td><td>查看所有备份记录</td></tr>
+          <tr><td><code>save</code></td><td>保存网页到备份站</td></tr>
+        </table>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">使用示例</div>
+        <div class="help-example">
+          <b>查看最新备份</b>（Wayback Machine，默认）<br>
+          <code>/?q=example.com</code> · <a href="/?q=example.com">尝试</a>
+        </div>
+        <div class="help-example">
+          <b>查看 Archive.today 上的备份</b><br>
+          <code>/?q=example.com&amp;s=archivetoday</code> · <a href="/?q=example.com&amp;s=archivetoday">尝试</a>
+        </div>
+        <div class="help-example">
+          <b>保存网页到 Wayback Machine</b><br>
+          <code>/?q=example.com&amp;a=save</code> · <a href="/?q=example.com&amp;a=save">尝试</a>
+        </div>
+        <div class="help-example">
+          <b>保存网页到 Megalodon.jp</b><br>
+          <code>/?q=example.com&amp;s=megalodon&amp;a=save</code> · <a href="/?q=example.com&amp;s=megalodon&amp;a=save">尝试</a>
+        </div>
+        <div class="help-example">
+          <b>查看 Ghost Archive 上所有备份</b><br>
+          <code>/?q=example.com&amp;s=ghostarchive&amp;a=all</code> · <a href="/?q=example.com&amp;s=ghostarchive&amp;a=all">尝试</a>
+        </div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">说明</div>
+        <div>· 通过 URL 参数访问时，页面会在<strong>当前标签页</strong>直接跳转到目标备份站（避免浏览器弹窗拦截）。</div>
+        <div>· 使用 Megalodon.jp 时，若网址不含 <code>http://</code> 或 <code>https://</code>，系统会自动补全为 <code>https://</code>。</div>
+        <div>· Ghost Archive 与 Arquivo.pt 的保存功能需在其网站内手动确认，因此点击"保存"会跳转至对应首页。</div>
+      </div>
     </div>
   </div>
 </main>
@@ -372,7 +483,7 @@
     }
   };
 
-  function doAction(action, url, service) {
+  function doAction(action, url, service, newTab) {
     if (!url) url = getUrl();
     if (!url) return;
     if (!service) service = getService();
@@ -380,23 +491,26 @@
     var encoded = isMegalodon ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url);
 
     if (action === 'save' && service === 'ghostarchive') {
-      window.open('https://ghostarchive.org', '_blank');
+      if (newTab) window.open('https://ghostarchive.org', '_blank');
+      else window.location.href = 'https://ghostarchive.org';
       return;
     }
     if (action === 'save' && service === 'arquivo') {
-      window.open('https://arquivo.pt/services/archivepagenow', '_blank');
+      if (newTab) window.open('https://arquivo.pt/services/archivepagenow', '_blank');
+      else window.location.href = 'https://arquivo.pt/services/archivepagenow';
       return;
     }
 
     var svc = services[service];
     var template = svc[action] || svc.latest;
     var finalUrl = template.replace('%0', encoded);
-    window.open(finalUrl, '_blank');
+    if (newTab) window.open(finalUrl, '_blank');
+    else window.location.href = finalUrl;
   }
 
-  $('btnAll').onclick = function() { doAction('all'); };
-  $('btnLatest').onclick = function() { doAction('latest'); };
-  $('btnSave').onclick = function() { doAction('save'); };
+  $('btnAll').onclick = function() { doAction('all', null, null, true); };
+  $('btnLatest').onclick = function() { doAction('latest', null, null, true); };
+  $('btnSave').onclick = function() { doAction('save', null, null, true); };
 
   // Parse URL parameters for OpenSearch / direct access
   var params = new URLSearchParams(location.search);
@@ -412,7 +526,7 @@
         if (radios[i].value === service) radios[i].checked = true;
       }
     }
-    doAction(action || 'latest', q, service);
+    doAction(action || 'latest', q, service, false);
   }
 })();
 </script>
