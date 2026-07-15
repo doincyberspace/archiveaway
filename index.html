@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>随备 Archive Away — 网页备份搜索</title>
+<title>随备 Archive Away | 网页备份聚合搜索</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
@@ -132,6 +132,46 @@
     flex-shrink: 0;
   }
 
+  .help {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px 16px;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    background: #fafafa;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #5f6368;
+  }
+
+  .help-title {
+    font-weight: 500;
+    color: #3c4043;
+    margin-bottom: 6px;
+  }
+
+  .help code {
+    font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+    font-size: 12px;
+    background: #e8eaed;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #202124;
+  }
+
+  .help a {
+    color: #1a73e8;
+    text-decoration: none;
+  }
+
+  .help a:hover {
+    text-decoration: underline;
+  }
+
+  .help-row {
+    margin-top: 4px;
+  }
+
   .buttons {
     display: flex;
     flex-wrap: wrap;
@@ -254,6 +294,14 @@
       <button id="btnAll">查看所有备份</button>
       <button id="btnLatest">查看最新备份</button>
       <button id="btnSave">保存该网址</button>
+    </div>
+
+    <div class="help">
+      <div class="help-title">OpenSearch 语法</div>
+      <div>可将本页添加为浏览器搜索引擎。URL 参数：<code>q</code> 网址, <code>s</code> 备份站, <code>a</code> 动作</div>
+      <div class="help-row"><code>s</code> 可选值：wayback · archiveit · archivetoday · ghostarchive · megalodon · arquivo</div>
+      <div class="help-row"><code>a</code> 可选值：latest · all · save</div>
+      <div class="help-row">示例：<a href="/?q=example.com">?q=example.com</a> · <a href="/?q=example.com&amp;s=archivetoday">?q=example.com&amp;s=archivetoday</a> · <a href="/?q=example.com&amp;a=save">?q=example.com&amp;a=save</a></div>
     </div>
   </div>
 </main>
