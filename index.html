@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>随备 Archive Away — 网页备份搜索</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/icon-48x48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    color: #202124;
+    background: #fff;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-bottom: 80px;
+  }
+
+  .logo {
+    width: 90%;
+    max-width: 500px;
+    height: auto;
+    margin-bottom: 32px;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 584px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .search-box {
+    width: 100%;
+    position: relative;
+  }
+
+  .search-box input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #dfe1e5;
+    border-radius: 24px;
+    padding: 0 20px;
+    font-size: 16px;
+    color: #202124;
+    outline: none;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .search-box input:hover {
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.1);
+    border-color: rgba(223, 225, 229, 0);
+  }
+
+  .search-box input:focus {
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+    border-color: rgba(223, 225, 229, 0);
+  }
+
+  .search-box input::placeholder {
+    color: #9aa0a6;
+  }
+
+  .options {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 16px;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    background: #fafafa;
+  }
+
+  .options-title {
+    font-size: 13px;
+    color: #5f6368;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .radio-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 16px;
+  }
+
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #3c4043;
+    cursor: pointer;
+    padding: 4px 0;
+    user-select: none;
+  }
+
+  .radio-group input[type="radio"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #1a73e8;
+    flex-shrink: 0;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .buttons button {
+    height: 36px;
+    padding: 0 18px;
+    border: 1px solid #f8f9fa;
+    border-radius: 4px;
+    background: #f8f9fa;
+    color: #3c4043;
+    font-size: 14px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+
+  .buttons button:hover {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border-color: #dadce0;
+    background: #f1f3f4;
+  }
+
+  .buttons button:active {
+    background: #e8eaed;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: #f2f2f2;
+    border-top: 1px solid #dadce0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  footer a {
+    color: #70757a;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  footer a:hover {
+    color: #3c4043;
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .logo {
+      max-width: 80%;
+    }
+
+    .radio-group {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .buttons button {
+      width: 100%;
+    }
+
+    footer {
+      gap: 16px;
+    }
+
+    footer a {
+      font-size: 13px;
+    }
+  }
+
+  @media (max-height: 500px) {
+    main {
+      padding-bottom: 60px;
+      justify-content: flex-start;
+      padding-top: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <img class="logo" src="logo.png" alt="随备 Archive Away">
+
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" id="urlInput" placeholder="输入网址" autocomplete="off">
+    </div>
+
+    <div class="options">
+      <div class="options-title">选择网页备份站</div>
+      <div class="radio-group">
+        <label><input type="radio" name="archive" value="wayback" checked> Wayback Machine</label>
+        <label><input type="radio" name="archive" value="archiveit"> Archive-It</label>
+        <label><input type="radio" name="archive" value="archivetoday"> Archive.today</label>
+        <label><input type="radio" name="archive" value="ghostarchive"> Ghost Archive</label>
+        <label><input type="radio" name="archive" value="megalodon"> Megalodon.jp</label>
+        <label><input type="radio" name="archive" value="arquivo"> Arquivo.pt</label>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="btnAll">查看所有备份</button>
+      <button id="btnLatest">查看最新备份</button>
+      <button id="btnSave">保存该网址</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <a href="https://c7.io/@doin" target="_blank" rel="noopener noreferrer">Fediverse</a>
+  <a href="https://github.com/doincyberspace/archiveaway" target="_blank" rel="noopener noreferrer">GitHub</a>
+</footer>
+
+<script>
+(function() {
+  var $ = function(id) { return document.getElementById(id); };
+
+  function getUrl() {
+    var url = $('urlInput').value.trim();
+    if (!url) {
+      alert('请输入网址');
+      return null;
+    }
+    return url;
+  }
+
+  function ensureProtocol(url, forceHttps) {
+    if (!/^https?:\/\//i.test(url)) {
+      return (forceHttps ? 'https://' : 'https://') + url;
+    }
+    return url;
+  }
+
+  function getService() {
+    var radios = document.getElementsByName('archive');
+    for (var i = 0; i < radios.length; i++) {
+      if (radios[i].checked) return radios[i].value;
+    }
+    return 'wayback';
+  }
+
+  var services = {
+    wayback: {
+      all: 'https://web.archive.org/web/*/%0',
+      latest: 'https://web.archive.org/web/%0',
+      save: 'https://web.archive.org/save/%0'
+    },
+    archiveit: {
+      all: 'https://wayback.archive-it.org/all/*/%0',
+      latest: 'https://wayback.archive-it.org/all/2/%0',
+      save: 'https://web.archive.org/save/%0'
+    },
+    archivetoday: {
+      all: 'https://archive.ph/%0',
+      latest: 'https://archive.ph/%0',
+      save: 'https://archive.ph/submit/?anyway=1&url=%0'
+    },
+    ghostarchive: {
+      all: 'https://ghostarchive.org/search?term=%0',
+      latest: 'https://ghostarchive.org/search?term=%0',
+      save: 'GHOSTARCHIVE'
+    },
+    megalodon: {
+      all: 'https://megalodon.jp/?url=%0&all=1',
+      latest: 'https://megalodon.jp/?url=%0&all=1',
+      save: 'https://megalodon.jp/pc/main?url=%0'
+    },
+    arquivo: {
+      all: 'https://arquivo.pt/url/search?q=%0',
+      latest: 'https://arquivo.pt/wayback/%0',
+      save: 'ARQUIVO'
+    }
+  };
+
+  $('btnAll').onclick = function() {
+    var url = getUrl();
+    if (!url) return;
+    var svc = services[getService()];
+    var finalUrl = svc.all.replace('%0', getService() === 'megalodon' ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url));
+    window.open(finalUrl, '_blank');
+  };
+
+  $('btnLatest').onclick = function() {
+    var url = getUrl();
+    if (!url) return;
+    var svc = services[getService()];
+    var finalUrl = svc.latest.replace('%0', getService() === 'megalodon' ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url));
+    window.open(finalUrl, '_blank');
+  };
+
+  $('btnSave').onclick = function() {
+    var url = getUrl();
+    if (!url) return;
+    var service = getService();
+
+    if (service === 'ghostarchive') {
+      window.open('https://ghostarchive.org', '_blank');
+      return;
+    }
+
+    if (service === 'arquivo') {
+      window.open('https://arquivo.pt/services/archivepagenow', '_blank');
+      return;
+    }
+
+    var svc = services[service];
+    var finalUrl = svc.save.replace('%0', service === 'megalodon' ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url));
+    window.open(finalUrl, '_blank');
+  };
+})();
+</script>
+
+</body>
+</html>
