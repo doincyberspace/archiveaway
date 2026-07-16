@@ -488,7 +488,7 @@
     if (!url) return;
     if (!service) service = getService();
     var isMegalodon = service === 'megalodon';
-    var encoded = isMegalodon ? encodeURIComponent(ensureProtocol(url, true)) : encodeURIComponent(url);
+    var rawUrl = isMegalodon ? ensureProtocol(url, true) : url;
 
     if (action === 'save' && service === 'ghostarchive') {
       if (newTab) window.open('https://ghostarchive.org', '_blank');
@@ -503,7 +503,10 @@
 
     var svc = services[service];
     var template = svc[action] || svc.latest;
-    var finalUrl = template.replace('%0', encoded);
+    // 若 %0 在 ?query 之后则用 encodeURIComponent，若在路径中则保留原样
+    var qi = template.indexOf('?');
+    var pi = template.indexOf('%0');
+    var finalUrl = template.replace('%0', (qi !== -1 && pi > qi) ? encodeURIComponent(rawUrl) : rawUrl);
     if (newTab) window.open(finalUrl, '_blank');
     else window.location.href = finalUrl;
   }
